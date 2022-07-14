@@ -37,8 +37,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     /* MySQL 驱动 */
     implementation 'mysql:mysql-connector-java'
-
-
+    // 验证码
+    implementation 'com.pig4cloud.plugin:captcha-spring-boot-starter:2.2.2'
 }
 
 test {
