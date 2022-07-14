@@ -1,5 +1,6 @@
 package com.github.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -28,15 +29,19 @@ public class User implements UserDetails, Serializable {
 
     private String username;
 
+    @JsonIgnore
     private String password;
 
     private String realName;
 
     private String email;
 
-    private Boolean enabled;
+    private Boolean enabled = true;
 
-    @ManyToMany
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
     @Fetch(FetchMode.JOIN)
     @JoinTable(
             name = "user_role",
@@ -46,13 +51,13 @@ public class User implements UserDetails, Serializable {
 
 
     @Column(columnDefinition = "boolean default true")
-    private Boolean accountNonExpired;
+    private Boolean accountNonExpired = true;
 
     @Column(columnDefinition = "boolean default true")
-    private Boolean accountNonLocked;
+    private Boolean accountNonLocked = true;
 
     @Column(columnDefinition = "boolean default true")
-    private Boolean credentialsNonExpired;
+    private Boolean credentialsNonExpired = true;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
