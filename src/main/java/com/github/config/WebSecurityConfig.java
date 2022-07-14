@@ -60,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationSuccessHandler jsonAuthenticationSuccessHandler() {
         return (req, res, auth) -> {
             res.setStatus(HttpStatus.OK.value());
-            res.getWriter().println(objectMapper.writeValueAsString(auth));
+            res.getWriter().println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(auth));
             log.info("认证成功");
         };
     }
@@ -76,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     {"details", exp.getMessage()}
             });
 
-            res.getWriter().println(objectMapper.writeValueAsString(errData));
+            res.getWriter().println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(errData));
         };
     }
 
