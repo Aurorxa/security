@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(code);
 
         return userRepository.findOne(Example.of(user, ExampleMatcher.matching()
-                        .withMatcher("username", ExampleMatcher.GenericPropertyMatchers.exact())
+                        .withMatcher("phone", ExampleMatcher.GenericPropertyMatchers.exact())
                         .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.exact())
                 )
         ).orElse(new User());
