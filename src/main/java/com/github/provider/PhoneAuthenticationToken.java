@@ -29,7 +29,7 @@ public class PhoneAuthenticationToken extends AbstractAuthenticationToken {
         setAuthenticated(false);
     }
 
-    public PhoneAuthenticationToken(Object phone, Object credentials,
+    public PhoneAuthenticationToken(Object phone, Object code,
                                     Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.phone = phone;
