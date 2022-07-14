@@ -41,6 +41,10 @@ public class PhoneAuthenticationProvider implements AuthenticationProvider {
         // 根据手机号、验证码查询用户信息
         User user = userService.findByPhoneAndCode(phone, code);
 
+        if (null == user) {
+            throw new BadCredentialsException("呵呵啦");
+        }
+
         return new PhoneAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
 
     }
