@@ -62,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public RestAuthenticationFilter requestAuthenticationFilter() throws Exception {
         RestAuthenticationFilter restAuthenticationFilter = new RestAuthenticationFilter(objectMapper);
         restAuthenticationFilter.setAuthenticationManager(authenticationManager());
-        restAuthenticationFilter.setFilterProcessesUrl("/authorize/web/login");
+        restAuthenticationFilter.setFilterProcessesUrl("/authorize/login");
         restAuthenticationFilter.setAuthenticationSuccessHandler(jsonAuthenticationSuccessHandler());
         restAuthenticationFilter.setAuthenticationFailureHandler(jsonLoginFailureHandler());
         return restAuthenticationFilter;
