@@ -12,21 +12,27 @@ import java.util.Collection;
  */
 public class PhoneAuthenticationToken extends AbstractAuthenticationToken {
 
-    private Object principal;
+    /**
+     * 手机号
+     */
+    private Object phone;
+    /**
+     * 密码
+     */
     private Object credentials;
 
 
-    public PhoneAuthenticationToken(Object principal, Object credentials) {
+    public PhoneAuthenticationToken(Object phone, Object credentials) {
         super(null);
-        this.principal = principal;
+        this.phone = phone;
         this.credentials = credentials;
         setAuthenticated(false);
     }
 
-    public PhoneAuthenticationToken(Object principal, Object credentials,
+    public PhoneAuthenticationToken(Object phone, Object credentials,
                                     Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
-        this.principal = principal;
+        this.phone = phone;
         this.credentials = credentials;
         super.setAuthenticated(true);
     }
@@ -37,7 +43,7 @@ public class PhoneAuthenticationToken extends AbstractAuthenticationToken {
     }
 
     public Object getPrincipal() {
-        return this.principal;
+        return this.phone;
     }
 
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {

@@ -1,4 +1,4 @@
-package com.github.service;
+package com.github.service.impl;
 
 import com.github.dao.UserRepository;
 import com.github.entity.User;

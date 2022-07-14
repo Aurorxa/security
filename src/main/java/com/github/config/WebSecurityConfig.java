@@ -3,6 +3,8 @@ package com.github.config;
 import cn.hutool.core.map.MapUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.filter.RestAuthenticationFilter;
+import com.github.provider.PhoneAuthenticationProvider;
+import com.github.service.UserService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +52,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     @NonNull
+    private UserService userService;
+
+    @NonNull
     private UserDetailsPasswordService userDetailsPasswordService;
 
     @Bean
@@ -88,6 +93,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
+        auth.authenticationProvider(phoneAuthenticationProvider());
     }
 
 
@@ -102,6 +108,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setUserDetailsPasswordService(userDetailsPasswordService);
         return daoAuthenticationProvider;
+    }
+
+
+    /**增加手机号 Provider
+     * @return
+     */
+    public PhoneAuthenticationProvider phoneAuthenticationProvider() {
+        PhoneAuthenticationProvider phoneAuthenticationProvider = new PhoneAuthenticationProvider();
+        phoneAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        phoneAuthenticationProvider.setUserService(userService);
+        return phoneAuthenticationProvider;
     }
 
 
