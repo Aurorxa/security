@@ -17,15 +17,15 @@ public class PhoneAuthenticationToken extends AbstractAuthenticationToken {
      */
     private Object phone;
     /**
-     * 密码
+     * 验证码，暂时用密码代替
      */
-    private Object credentials;
+    private Object code;
 
 
-    public PhoneAuthenticationToken(Object phone, Object credentials) {
+    public PhoneAuthenticationToken(Object phone, Object code) {
         super(null);
         this.phone = phone;
-        this.credentials = credentials;
+        this.code = code;
         setAuthenticated(false);
     }
 
@@ -33,13 +33,13 @@ public class PhoneAuthenticationToken extends AbstractAuthenticationToken {
                                     Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.phone = phone;
-        this.credentials = credentials;
+        this.code = code;
         super.setAuthenticated(true);
     }
 
 
     public Object getCredentials() {
-        return this.credentials;
+        return this.code;
     }
 
     public Object getPrincipal() {
@@ -58,7 +58,7 @@ public class PhoneAuthenticationToken extends AbstractAuthenticationToken {
     @Override
     public void eraseCredentials() {
         super.eraseCredentials();
-        credentials = null;
+        code = null;
     }
 
 
