@@ -127,6 +127,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PhoneAuthenticationFilter phoneAuthenticationFilter() throws Exception {
         PhoneAuthenticationFilter phoneAuthenticationFilter = new PhoneAuthenticationFilter(objectMapper);
         phoneAuthenticationFilter.setAuthenticationManager(authenticationManager());
+        phoneAuthenticationFilter.setAuthenticationSuccessHandler(jsonAuthenticationSuccessHandler());
+        phoneAuthenticationFilter.setAuthenticationFailureHandler(jsonLoginFailureHandler());
         return phoneAuthenticationFilter;
     }
 
