@@ -10,7 +10,7 @@ import java.util.Collection;
  * @version 1.0
  * @since 2022-07-14 16:15:23
  */
-public class PhoneAuthenticationToken extends AbstractAuthenticationToken {
+public class MobileAuthenticationToken extends AbstractAuthenticationToken {
 
     /**
      * 手机号
@@ -22,15 +22,15 @@ public class PhoneAuthenticationToken extends AbstractAuthenticationToken {
     private Object code;
 
 
-    public PhoneAuthenticationToken(Object phone, Object code) {
+    public MobileAuthenticationToken(Object phone, Object code) {
         super(null);
         this.phone = phone;
         this.code = code;
         setAuthenticated(false);
     }
 
-    public PhoneAuthenticationToken(Object phone, Object code,
-                                    Collection<? extends GrantedAuthority> authorities) {
+    public MobileAuthenticationToken(Object phone, Object code,
+                                     Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.phone = phone;
         this.code = code;

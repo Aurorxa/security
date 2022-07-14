@@ -24,15 +24,11 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public User findByPhoneAndCode(String phone, String code) {
+    public User findByPhone(String phone) {
         User user = new User();
         user.setPhone(phone);
-        user.setPassword(code);
 
         return userRepository.findOne(Example.of(user, ExampleMatcher.matching()
-                        .withMatcher("phone", ExampleMatcher.GenericPropertyMatchers.exact())
-                        .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.exact())
-                )
-        ).orElse(null);
+                .withMatcher("phone", ExampleMatcher.GenericPropertyMatchers.exact()))).orElse(null);
     }
 }

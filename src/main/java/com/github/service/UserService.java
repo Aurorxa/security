@@ -10,12 +10,11 @@ import com.github.entity.User;
 public interface UserService {
 
     /**
-     * 根据手机号和验证码查询用户信息
+     * 根据手机号查询用户信息
      *
      * @param phone
-     * @param code
      * @return
      */
-    User findByPhoneAndCode(String phone, String code);
+    User findByPhone(String phone);
 
 }

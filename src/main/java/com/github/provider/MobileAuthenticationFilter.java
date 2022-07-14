@@ -18,11 +18,11 @@ import java.io.IOException;
  * @version 1.0
  * @since 2022-07-14 16:46:21
  */
-public class PhoneAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class MobileAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     private ObjectMapper objectMapper;
 
-    public PhoneAuthenticationFilter(ObjectMapper objectMapper) {
+    public MobileAuthenticationFilter(ObjectMapper objectMapper) {
         super(new AntPathRequestMatcher("/authorize/mobile", "POST"));
         this.objectMapper = objectMapper;
     }
@@ -30,13 +30,13 @@ public class PhoneAuthenticationFilter extends AbstractAuthenticationProcessingF
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
-        PhoneAuthenticationToken authRequest;
+        MobileAuthenticationToken authRequest;
         JsonNode jsonNode;
         try {
             jsonNode = objectMapper.readTree(request.getInputStream());
             String phone = jsonNode.get("phone").textValue();
             String code = jsonNode.get("code").textValue();
-            authRequest = new PhoneAuthenticationToken(phone, code);
+            authRequest = new MobileAuthenticationToken(phone, code);
         } catch (Exception e) {
             throw new BadCredentialsException("手机号或验证码不存在");
         }

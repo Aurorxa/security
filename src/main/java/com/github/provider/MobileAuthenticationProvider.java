@@ -17,7 +17,7 @@ import org.springframework.util.StringUtils;
  * @since 2022-07-14 16:03:48
  */
 @Data
-public class PhoneAuthenticationProvider implements AuthenticationProvider {
+public class MobileAuthenticationProvider implements AuthenticationProvider {
 
     private UserService userService;
 
@@ -38,20 +38,22 @@ public class PhoneAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("验证码不能为空");
         }
 
+        // 校验验证码逻辑
+
         // 根据手机号、验证码查询用户信息
-        User user = userService.findByPhoneAndCode(phone, code);
+        User user = userService.findByPhone(phone);
 
         if (null == user) {
-            throw new BadCredentialsException("呵呵啦");
+            throw new BadCredentialsException("手机号不存在");
         }
 
-        return new PhoneAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
+        return new MobileAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
 
     }
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.equals(PhoneAuthenticationToken.class);
+        return clazz.equals(MobileAuthenticationToken.class);
     }
 
 

@@ -3,8 +3,8 @@ package com.github.config;
 import cn.hutool.core.map.MapUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.filter.RestAuthenticationFilter;
-import com.github.provider.PhoneAuthenticationFilter;
-import com.github.provider.PhoneAuthenticationProvider;
+import com.github.provider.MobileAuthenticationFilter;
+import com.github.provider.MobileAuthenticationProvider;
 import com.github.service.UserService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -115,21 +115,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     /**增加手机号 Provider
      * @return
      */
-    public PhoneAuthenticationProvider phoneAuthenticationProvider() {
-        PhoneAuthenticationProvider phoneAuthenticationProvider = new PhoneAuthenticationProvider();
-        phoneAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        phoneAuthenticationProvider.setUserService(userService);
-        return phoneAuthenticationProvider;
+    public MobileAuthenticationProvider phoneAuthenticationProvider() {
+        MobileAuthenticationProvider mobileAuthenticationProvider = new MobileAuthenticationProvider();
+        mobileAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        mobileAuthenticationProvider.setUserService(userService);
+        return mobileAuthenticationProvider;
     }
 
 
     @Bean
-    public PhoneAuthenticationFilter phoneAuthenticationFilter() throws Exception {
-        PhoneAuthenticationFilter phoneAuthenticationFilter = new PhoneAuthenticationFilter(objectMapper);
-        phoneAuthenticationFilter.setAuthenticationManager(authenticationManager());
-        phoneAuthenticationFilter.setAuthenticationSuccessHandler(jsonAuthenticationSuccessHandler());
-        phoneAuthenticationFilter.setAuthenticationFailureHandler(jsonLoginFailureHandler());
-        return phoneAuthenticationFilter;
+    public MobileAuthenticationFilter phoneAuthenticationFilter() throws Exception {
+        MobileAuthenticationFilter mobileAuthenticationFilter = new MobileAuthenticationFilter(objectMapper);
+        mobileAuthenticationFilter.setAuthenticationManager(authenticationManager());
+        mobileAuthenticationFilter.setAuthenticationSuccessHandler(jsonAuthenticationSuccessHandler());
+        mobileAuthenticationFilter.setAuthenticationFailureHandler(jsonLoginFailureHandler());
+        return mobileAuthenticationFilter;
     }
 
 
