@@ -44,6 +44,7 @@ public class DefaultApplicationRunner implements ApplicationRunner {
         if (!optional.isPresent()) {
             User user = new User();
             user.setUsername("admin");
+            user.setPhone("17722291552");
             user.setPassword(passwordEncoder.encode("123456"));
             user.setRealName("系统管理员");
             user.setEmail("admin@qq.com");

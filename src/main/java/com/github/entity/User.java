@@ -34,6 +34,8 @@ public class User implements UserDetails, Serializable {
 
     private String realName;
 
+    private String phone;
+
     private String email;
 
     private Boolean enabled = true;
