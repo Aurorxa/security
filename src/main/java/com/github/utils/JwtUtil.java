@@ -22,7 +22,7 @@ public class JwtUtil {
     /**
      * 用于签名
      */
-    private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    public static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
     /**
      * 生成 Jwt

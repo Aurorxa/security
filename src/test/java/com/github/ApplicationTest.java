@@ -3,6 +3,8 @@ package com.github;
 import com.github.entity.Role;
 import com.github.entity.User;
 import com.github.utils.JwtUtil;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -46,6 +48,13 @@ public class ApplicationTest {
 
         String jwtToken = jwtUtil.createJwtToken(user);
         log.info("jwtToken == {}", jwtToken);
+
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(JwtUtil.key)
+                .build()
+                .parseClaimsJws(jwtToken).getBody();
+        log.info("claims == {}", claims);
+        log.info("subject == {}", claims.getSubject());
 
     }
 
