@@ -1,4 +1,4 @@
-package com.github.config;
+package com.github.handler;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;

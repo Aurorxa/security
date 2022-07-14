@@ -1,4 +1,4 @@
-package com.github.config;
+package com.github.handler;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
