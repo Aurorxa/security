@@ -124,8 +124,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Bean
-    public PhoneAuthenticationFilter phoneAuthenticationFilter() {
+    public PhoneAuthenticationFilter phoneAuthenticationFilter() throws Exception {
         PhoneAuthenticationFilter phoneAuthenticationFilter = new PhoneAuthenticationFilter(objectMapper);
+        phoneAuthenticationFilter.setAuthenticationManager(authenticationManager());
         return phoneAuthenticationFilter;
     }
 
