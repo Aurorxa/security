@@ -33,6 +33,6 @@ public class UserServiceImpl implements UserService {
                         .withMatcher("username", ExampleMatcher.GenericPropertyMatchers.exact())
                         .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.exact())
                 )
-        ).orElse(null);
+        ).orElse(new User());
     }
 }
