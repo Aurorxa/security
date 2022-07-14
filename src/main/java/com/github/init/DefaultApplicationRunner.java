@@ -11,10 +11,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.Optional;
 
 /**
@@ -34,12 +30,7 @@ public class DefaultApplicationRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        Optional<User> optional = userRepository.findOne(new Specification<User>() {
-            @Override
-            public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.equal(root.get("username"), "admin");
-            }
-        });
+        Optional<User> optional = userRepository.findOne((Specification<User>) (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("username"), "admin"));
         // 如果数据库没有该账户
         if (!optional.isPresent()) {
             User user = new User();
