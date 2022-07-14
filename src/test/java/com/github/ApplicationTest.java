@@ -46,13 +46,10 @@ public class ApplicationTest {
 
         user.getRoles().add(role);
 
-        String jwtToken = jwtUtil.createJwtToken(user);
+        String jwtToken = jwtUtil.createAccessToken(user);
         log.info("jwtToken == {}", jwtToken);
 
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(JwtUtil.key)
-                .build()
-                .parseClaimsJws(jwtToken).getBody();
+        Claims claims = Jwts.parserBuilder().setSigningKey(JwtUtil.key).build().parseClaimsJws(jwtToken).getBody();
         log.info("claims == {}", claims);
         log.info("subject == {}", claims.getSubject());
 

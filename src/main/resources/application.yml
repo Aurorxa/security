@@ -22,3 +22,8 @@ spring:
     generate-ddl: true
     show-sql: true
 
+
+app:
+  jwt:
+    accessTokenExpireTime: 60 * 1000
+    refreshTokenExpireTime: 30 * 24 * 3600 * 1000
