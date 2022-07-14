@@ -3,6 +3,7 @@ package com.github.config;
 import cn.hutool.core.map.MapUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.filter.RestAuthenticationFilter;
+import com.github.provider.PhoneAuthenticationFilter;
 import com.github.provider.PhoneAuthenticationProvider;
 import com.github.service.UserService;
 import lombok.NonNull;
@@ -122,6 +123,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
+    @Bean
+    public PhoneAuthenticationFilter phoneAuthenticationFilter() {
+        PhoneAuthenticationFilter phoneAuthenticationFilter = new PhoneAuthenticationFilter(objectMapper);
+        return phoneAuthenticationFilter;
+    }
+
+
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
@@ -134,6 +142,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // .requestMatchers(req -> req.mvcMatchers("/api/**", "/admin/**", "/authorize/**"))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.NEVER))
                 .addFilterAt(requestAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(phoneAuthenticationFilter(), RestAuthenticationFilter.class)
                 .authorizeRequests(authorizeRequests -> authorizeRequests
                         .antMatchers("/authorize/**").permitAll()
                         .antMatchers("/register").permitAll()
