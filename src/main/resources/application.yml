@@ -23,6 +23,6 @@ spring:
 
 app:
   jwt:
-    accessTokenExpireTime: 60000
+    accessTokenExpireTime: 600000
     refreshTokenExpireTime: 2592000000
 
