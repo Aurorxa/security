@@ -3,7 +3,7 @@ plugins {
     // Lombok
     id "io.freefair.lombok" version "6.5.0.3"
     // 维护 springboot 版本号,不单独使用,和下面两个插件一起用
-    id 'org.springframework.boot' version '2.2.1.RELEASE'
+    id 'org.springframework.boot' version '2.3.7.RELEASE'
     // 进行依赖管理,在引入其它 boot 依赖时省略版本号、解决 jar 包冲突问题
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 }
