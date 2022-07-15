@@ -45,6 +45,11 @@ public class User implements UserDetails, Serializable {
      */
     private Boolean usingMfa = false;
 
+    /**
+     * mfa key
+     */
+    private String mfaKey;
+
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE

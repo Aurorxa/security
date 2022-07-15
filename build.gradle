@@ -44,6 +44,8 @@ dependencies {
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     /* 邮件 */
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.redisson:redisson-spring-boot-starter:3.17.4'
+
 }
 
 test {
