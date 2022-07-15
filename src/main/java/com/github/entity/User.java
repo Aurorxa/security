@@ -40,6 +40,11 @@ public class User implements UserDetails, Serializable {
 
     private Boolean enabled = true;
 
+    /**
+     * 是否启用两步验证
+     */
+    private Boolean usingMfa = false;
+
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
