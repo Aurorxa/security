@@ -4,6 +4,8 @@ server:
       encoding: utf-8
     uri-encoding: UTF-8
 spring:
+  profiles:
+    active: dev
   resources:
     add-mappings: false
   mvc:
@@ -24,8 +26,8 @@ spring:
     default-encoding: utf-8
     protocol: smtp
     host: smtp.qq.com # 使用合法的 SMTP
-    username:  # 用户名
-    password:  # 授权码
+    username:   # 用户名
+    password:   # 授权码
     # 如果是 https ，则必须配置 ssl，端口为 465；如果是 http 可以不配置 ssl，端口为 25
     port: 465
     properties:
