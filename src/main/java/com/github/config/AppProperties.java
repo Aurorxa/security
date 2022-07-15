@@ -19,6 +19,16 @@ public class AppProperties {
     @Getter
     @Setter
     public static class Jwt {
+
+        /**
+         * 请求的 header
+         */
+        private String header = "Authorization";
+
+        /**
+         * jwt 前缀
+         */
+        private String prefix = "Bearer ";
         /**
          * 访问令牌的过期时间
          */

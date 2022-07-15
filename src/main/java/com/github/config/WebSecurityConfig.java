@@ -2,6 +2,7 @@ package com.github.config;
 
 import cn.hutool.core.map.MapUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.filter.JwtFilter;
 import com.github.filter.RestAuthenticationFilter;
 import com.github.provider.MobileAuthenticationFilter;
 import com.github.provider.MobileAuthenticationProvider;
@@ -57,6 +58,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @NonNull
     private UserDetailsPasswordService userDetailsPasswordService;
+
+    @NonNull
+    private JwtFilter jwtFilter;
 
     @Bean
     public RestAuthenticationFilter requestAuthenticationFilter() throws Exception {
@@ -147,6 +151,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterAt(requestAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(phoneAuthenticationFilter(), RestAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests(authorizeRequests -> authorizeRequests
                         .antMatchers("/authorize/**").permitAll()
                         .antMatchers("/register").permitAll()
