@@ -26,11 +26,11 @@ public class JwtUtil {
     /**
      * 用于签名的访问令牌的密钥
      */
-    public static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    public static final Key KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     /**
      * 用于签名的刷新令牌的密钥
      */
-    public static final Key refreshKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    public static final Key REFRESH_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
     @NonNull
     private AppProperties appProperties;
@@ -42,7 +42,7 @@ public class JwtUtil {
      * @return
      */
     public String createAccessToken(UserDetails userDetails) {
-        return createJwtToken(userDetails, appProperties.getJwt().getAccessTokenExpireTime(), key);
+        return createJwtToken(userDetails, appProperties.getJwt().getAccessTokenExpireTime(), KEY);
     }
 
 
@@ -53,7 +53,7 @@ public class JwtUtil {
      * @return
      */
     public String createRefreshToken(UserDetails userDetails) {
-        return createJwtToken(userDetails, appProperties.getJwt().getRefreshTokenExpireTime(), refreshKey);
+        return createJwtToken(userDetails, appProperties.getJwt().getRefreshTokenExpireTime(), REFRESH_KEY);
     }
 
     /**
