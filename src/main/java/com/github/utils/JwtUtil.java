@@ -26,7 +26,7 @@ public class JwtUtil {
     /**
      * 用于签名的访问令牌的密钥
      */
-    public static final Key KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    public static final Key ACCESS_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     /**
      * 用于签名的刷新令牌的密钥
      */
@@ -38,19 +38,19 @@ public class JwtUtil {
     /**
      * 创建访问令牌
      *
-     * @param userDetails
-     * @return
+     * @param userDetails 用户信息
+     * @return 访问令牌
      */
     public String createAccessToken(UserDetails userDetails) {
-        return createJwtToken(userDetails, appProperties.getJwt().getAccessTokenExpireTime(), KEY);
+        return createJwtToken(userDetails, appProperties.getJwt().getAccessTokenExpireTime(), ACCESS_KEY);
     }
 
 
     /**
      * 创建刷新令牌
      *
-     * @param userDetails
-     * @return
+     * @param userDetails 用户信息
+     * @return 刷新令牌
      */
     public String createRefreshToken(UserDetails userDetails) {
         return createJwtToken(userDetails, appProperties.getJwt().getRefreshTokenExpireTime(), REFRESH_KEY);
@@ -59,10 +59,10 @@ public class JwtUtil {
     /**
      * 生成 Jwt
      *
-     * @param userDetails
+     * @param userDetails 用户信息
      * @param key         密钥
      * @param expireTime  过期时间
-     * @return
+     * @return Jwt Token
      */
     public String createJwtToken(UserDetails userDetails, Long expireTime, Key key) {
         long now = System.currentTimeMillis();

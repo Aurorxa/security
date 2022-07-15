@@ -19,7 +19,6 @@ public class AppProperties {
     @Getter
     @Setter
     public static class Jwt {
-
         /**
          * 访问令牌的过期时间
          */

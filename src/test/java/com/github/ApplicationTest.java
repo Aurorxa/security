@@ -49,7 +49,7 @@ public class ApplicationTest {
         String jwtToken = jwtUtil.createAccessToken(user);
         log.info("jwtToken == {}", jwtToken);
 
-        Claims claims = Jwts.parserBuilder().setSigningKey(JwtUtil.KEY).build().parseClaimsJws(jwtToken).getBody();
+        Claims claims = Jwts.parserBuilder().setSigningKey(JwtUtil.ACCESS_KEY).build().parseClaimsJws(jwtToken).getBody();
         log.info("claims == {}", claims);
         log.info("subject == {}", claims.getSubject());
 
