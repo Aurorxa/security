@@ -143,7 +143,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 // .requestMatchers(req -> req.mvcMatchers("/api/**", "/admin/**", "/authorize/**"))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.NEVER))
+                // 前后端分离模式不需要 session
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterAt(requestAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(phoneAuthenticationFilter(), RestAuthenticationFilter.class)
                 .authorizeRequests(authorizeRequests -> authorizeRequests
@@ -152,9 +153,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .antMatchers("/admin/**").hasRole("ADMIN")
                         .antMatchers("/api/**").hasRole("USER")
                         .anyRequest().authenticated())
+                // 禁止表单登录
                 .formLogin(AbstractHttpConfigurer::disable)
+                // 禁止 basic 登录
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable);
+                // 禁止 csrf
+                .csrf(AbstractHttpConfigurer::disable)
+                // 禁止默认退出
+                .logout(AbstractHttpConfigurer::disable);
 
     }
 }
