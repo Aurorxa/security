@@ -125,7 +125,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    /**增加手机号 Provider
+    /**
+     * 增加手机号 Provider
+     *
      * @return
      */
     public MobileAuthenticationProvider phoneAuthenticationProvider() {
@@ -167,6 +169,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .antMatchers("/register").permitAll()
                         .antMatchers("/admin/**").hasRole("ADMIN")
                         .antMatchers("/api/**").hasRole("USER")
+                        .antMatchers("/token/**").permitAll()
                         .anyRequest().authenticated())
                 // 禁止表单登录
                 .formLogin(AbstractHttpConfigurer::disable)
