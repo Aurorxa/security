@@ -41,8 +41,8 @@ public class DefaultApplicationRunner implements ApplicationRunner {
             user.setEmail("admin@qq.com");
 
             Role role = new Role();
-            role.setAuthority("ADMIN");
-            role.setAuthority("USER");
+            role.setAuthority("ROLE_ADMIN");
+            role.setAuthority("ROLE_USER");
 
             user.getRoles().add(role);
 
