@@ -48,6 +48,7 @@ public class User implements UserDetails, Serializable {
     /**
      * mfa key
      */
+    @JsonIgnore
     private String mfaKey;
 
     @ManyToMany(cascade = {
