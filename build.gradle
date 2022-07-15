@@ -45,6 +45,9 @@ dependencies {
     /* 邮件 */
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.redisson:redisson-spring-boot-starter:3.17.4'
+    /* 阿里云短信 */
+    implementation 'com.aliyun:dysmsapi20170525:2.0.16'
+
 
 }
 
