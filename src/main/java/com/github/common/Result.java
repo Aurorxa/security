@@ -1,7 +1,7 @@
 package com.github.common;
 
 import lombok.Data;
-import lombok.With;
+import lombok.experimental.Accessors;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,8 +11,8 @@ import java.util.Map;
  * @version 1.0
  * @since 2022-07-15 09:46:12
  */
-@With
 @Data
+@Accessors(chain = true)
 public class Result {
 
     private Integer code;
@@ -31,6 +31,16 @@ public class Result {
         result.setCode(ResultEnum.SUCCESS.getCode());
         result.setSuccess(ResultEnum.SUCCESS.getFlag());
         result.setMessage(ResultEnum.SUCCESS.getMessage());
+        return result;
+    }
+
+    public static Result ok(Map<String, Object> data) {
+        Result result = new Result();
+        // 硬编码 : 枚举类 : 代码规范的
+        result.setCode(ResultEnum.SUCCESS.getCode());
+        result.setSuccess(ResultEnum.SUCCESS.getFlag());
+        result.setMessage(ResultEnum.SUCCESS.getMessage());
+        result.setData(data);
         return result;
     }
 

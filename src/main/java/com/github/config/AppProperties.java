@@ -19,7 +19,6 @@ public class AppProperties {
     @Getter
     @Setter
     public static class Jwt {
-
         /**
          * 请求的 header
          */
