@@ -66,7 +66,13 @@ public class JwtUtil {
      */
     public String createJwtToken(UserDetails userDetails, Long expireTime, Key key) {
         long now = System.currentTimeMillis();
-        return Jwts.builder().setId("security").claim("authorities", userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList())).setSubject(userDetails.getUsername()).setIssuedAt(new Date(now)).setExpiration(new Date(now + expireTime)).signWith(key, SignatureAlgorithm.HS512).compact();
+        return Jwts.builder()
+                .setId("security")
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(now))
+                .setExpiration(new Date(now + expireTime))
+                .claim("authorities", userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+                .signWith(key, SignatureAlgorithm.HS512).compact();
     }
 
 }
