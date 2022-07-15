@@ -20,6 +20,24 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5Dialect
     generate-ddl: true
     show-sql: true
+  mail:
+    default-encoding: utf-8
+    protocol: smtp
+    host: smtp.qq.com # 使用合法的 SMTP
+    username:  # 用户名
+    password:  # 授权码
+    # 如果是 https ，则必须配置 ssl，端口为 465；如果是 http 可以不配置 ssl，端口为 25
+    port: 465
+    properties:
+      mail.smtp.auth: true # 启用 SMTP 认证
+      mail.smtp.starttls.enable: true # 启动 TLS
+      mail.smtp.starttls.required: true # 必须采用 TLS 加密连接
+      # ssl 配置，如果是 http ，可以不配置 ssl
+      mail.smtp.ssl.enable: true
+      mail.smtp.ssl.socketFactory.fallback: false
+      mail.smtp.ssl.socketFactory.class: com.sun.mail.util.MailSSLSocketFactory
+    test-connection: true # 测试连接
+
 
 app:
   jwt:
