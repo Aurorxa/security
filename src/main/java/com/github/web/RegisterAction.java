@@ -2,7 +2,6 @@ package com.github.web;
 
 import com.github.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegisterAction {
 
     @PostMapping("/register")
-    public UserDto register(@Validated @RequestBody UserDto user, Authentication authentication) {
+    public UserDto register(@Validated @RequestBody UserDto user) {
         log.info("user = {}", user);
-        log.info("authentication = {}", authentication);
+        // TODO 1：确保 username、email、mobile 唯一，需要去数据库中校验
+        // TODO 2：我们需要将 userDto 转换为 user ，并分配一个默认的角色（ROLE_USER）
         return user;
     }
 
