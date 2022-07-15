@@ -1,9 +1,8 @@
 server:
-  servlet:
-    encoding:
-      charset: utf-8
-      force: true
-      enabled: true
+  tomcat:
+    access-log:
+      encoding: utf-8
+    uri-encoding: UTF-8
 spring:
   resources:
     add-mappings: false
@@ -22,8 +21,8 @@ spring:
     generate-ddl: true
     show-sql: true
 
-
 app:
   jwt:
     accessTokenExpireTime: 60000
     refreshTokenExpireTime: 2592000000
+
