@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -17,7 +18,7 @@ import java.util.Date;
  * @since 2022-07-15 15:49:36
  */
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 @RequiredArgsConstructor
 public class QqEmailServiceImpl implements EmailService {
 

@@ -16,6 +16,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
@@ -28,7 +29,7 @@ import java.util.Collection;
  */
 @Slf4j
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 @RequiredArgsConstructor
 public class LoginServiceImpl implements LoginService {
 
@@ -43,21 +44,17 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public Result<LoginReturnDto> login(LoginDto loginDto) {
-
+        // 封装 token
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
-        try {
-            UsernamePasswordAuthenticationToken authenticate = (UsernamePasswordAuthenticationToken) this.authenticationManager.authenticate(token);
-            String username = ((UserDetails) authenticate.getPrincipal()).getUsername();
-            Collection<GrantedAuthority> authorities = authenticate.getAuthorities();
-            User userDetails = new User(username, loginDto.getPassword(), authorities);
-            String accessToken = jwtUtil.createAccessToken(userDetails);
-            String refreshToken = jwtUtil.createRefreshToken(userDetails);
-            return Result.success(new LoginReturnDto().setAccessToken(accessToken).setRefreshToken(refreshToken));
-        } catch (Exception e) {
-            log.info("LoginServiceImpl.login == {}", e);
-            e.printStackTrace();
-            return Result.error();
-        }
+        // 进行认证
+        UsernamePasswordAuthenticationToken authenticate = (UsernamePasswordAuthenticationToken) this.authenticationManager.authenticate(token);
+        // 生成访问令牌和刷新令牌，返回给前端
+        String username = ((UserDetails) authenticate.getPrincipal()).getUsername();
+        Collection<GrantedAuthority> authorities = authenticate.getAuthorities();
+        User userDetails = new User(username, loginDto.getPassword(), authorities);
+        String accessToken = jwtUtil.createAccessToken(userDetails);
+        String refreshToken = jwtUtil.createRefreshToken(userDetails);
+        return Result.success(new LoginReturnDto().setAccessToken(accessToken).setRefreshToken(refreshToken));
     }
 
     @Override

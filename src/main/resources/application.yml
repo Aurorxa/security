@@ -12,7 +12,7 @@ spring:
     throw-exception-if-no-handler-found: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.0.16:3306/test?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&useSSL=false&serverTimezone=GMT
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&useSSL=false&serverTimezone=GMT&allowPublicKeyRetrieval=true
     username: root
     password: 123456
   jpa:
@@ -27,8 +27,8 @@ spring:
     default-encoding: utf-8
     protocol: smtp
     host: smtp.qq.com # 使用合法的 SMTP
-    username:   # 用户名
-    password:   # 授权码
+    username: ""  # 用户名
+    password: ""  # 授权码
     # 如果是 https ，则必须配置 ssl，端口为 465；如果是 http 可以不配置 ssl，端口为 25
     port: 465
     properties:
