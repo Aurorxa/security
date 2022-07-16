@@ -1,6 +1,10 @@
 package com.github.common;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -27,8 +31,12 @@ import java.util.stream.Collectors;
  * @since 2022-07-16 22:15:06
  */
 @Slf4j
+@RequiredArgsConstructor
 @RestControllerAdvice
 public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
+
+    @NonNull
+    private ObjectMapper objectMapper;
 
     /**
      * 判断类或者方法是否使用了 @ResponseBody
@@ -38,11 +46,16 @@ public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
         return AnnotatedElementUtils.hasAnnotation(returnType.getContainingClass(), ResponseBody.class) || returnType.hasMethodAnnotation(ResponseBody.class);
     }
 
+    @SneakyThrows
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         // 防止重复包裹的问题出现
         if (body instanceof Result) {
             return body;
+        }
+        if (body instanceof String) {
+            System.out.println("Result.success(body) = " + Result.success(body));
+            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(Result.success(body));
         }
         return Result.success(body);
     }
