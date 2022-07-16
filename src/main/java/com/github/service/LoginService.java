@@ -2,6 +2,9 @@ package com.github.service;
 
 import com.github.common.Result;
 import com.github.dto.LoginDto;
+import com.github.dto.LoginReturnDto;
+
+import java.nio.file.AccessDeniedException;
 
 /**
  * @author 许大仙
@@ -15,5 +18,14 @@ public interface LoginService {
      * @param loginDto
      * @return
      */
-    Result login(LoginDto loginDto);
+    Result<LoginReturnDto> login(LoginDto loginDto);
+
+    /**
+     * 刷新令牌
+     *
+     * @param authorization
+     * @param refreshToken
+     * @return
+     */
+    Result<LoginReturnDto> tokenRefresh(String authorization, String refreshToken) throws AccessDeniedException;
 }

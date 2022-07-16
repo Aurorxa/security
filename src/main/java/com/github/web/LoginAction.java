@@ -1,11 +1,9 @@
 package com.github.web;
 
-import cn.hutool.core.util.StrUtil;
 import com.github.common.Result;
-import com.github.config.AppProperties;
 import com.github.dto.LoginDto;
+import com.github.dto.LoginReturnDto;
 import com.github.service.LoginService;
-import com.github.utils.JwtUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +11,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author 许大仙
@@ -30,27 +26,28 @@ public class LoginAction {
     @NonNull
     private LoginService loginService;
 
-    @NonNull
-    private AppProperties properties;
-
-    @NonNull
-    private JwtUtil jwtUtil;
-
+    /**
+     * 登录
+     *
+     * @param loginDto
+     * @return
+     */
     @PostMapping("/login")
-    public Result login(@RequestBody @Validated LoginDto loginDto) {
+    public Result<LoginReturnDto> login(@RequestBody @Validated LoginDto loginDto) {
         return loginService.login(loginDto);
     }
 
+    /**
+     * 刷新令牌
+     *
+     * @param authorization 请求头中存放访问令牌
+     * @param refreshToken  刷新令牌
+     * @return
+     * @throws AccessDeniedException
+     */
     @PostMapping("/token/refresh")
-    public Result tokenRefresh(@RequestHeader(name = "Authorization") String authorization, @RequestParam String refreshToken) throws AccessDeniedException {
-        String accessToken = StrUtil.removePrefix(authorization, properties.getJwt().getPrefix());
-        if (jwtUtil.validateRefreshToken(refreshToken) && jwtUtil.validateAccessTokenWithoutExpiration(accessToken)) {
-            Map<String, Object> resultMap = new HashMap<>();
-            resultMap.put("accessToken", jwtUtil.createAccessTokenWithRefreshToken(refreshToken));
-            resultMap.put("refreshToken", refreshToken);
-            return Result.ok(resultMap);
-        }
-        return Result.ok();
+    public Result<LoginReturnDto> tokenRefresh(@RequestHeader(name = "Authorization") String authorization, @RequestParam String refreshToken) throws AccessDeniedException {
+        return loginService.tokenRefresh(authorization, refreshToken);
     }
 
 

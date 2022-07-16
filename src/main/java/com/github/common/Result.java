@@ -1,10 +1,10 @@
 package com.github.common;
 
+import cn.hutool.core.date.DateUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.Serializable;
 
 /**
  * @author 许大仙
@@ -13,43 +13,51 @@ import java.util.Map;
  */
 @Data
 @Accessors(chain = true)
-public class Result {
+public class Result<T> implements Serializable {
 
-    private Integer code;
-    private Boolean success;
-    private String message;
+    public static Boolean SUCCESS_STATUS = true;
 
-    private Map<String, Object> data = new HashMap<>();
+    public static Boolean ERROR_STATUS = false;
 
-    private Result() {
+    private Boolean status;
 
-    }
+    private T data;
 
-    public static Result ok() {
-        Result result = new Result();
-        // 硬编码 : 枚举类 : 代码规范的
-        result.setCode(ResultEnum.SUCCESS.getCode());
-        result.setSuccess(ResultEnum.SUCCESS.getFlag());
-        result.setMessage(ResultEnum.SUCCESS.getMessage());
-        return result;
-    }
+    private String msg;
 
-    public static Result ok(Map<String, Object> data) {
-        Result result = new Result();
-        // 硬编码 : 枚举类 : 代码规范的
-        result.setCode(ResultEnum.SUCCESS.getCode());
-        result.setSuccess(ResultEnum.SUCCESS.getFlag());
-        result.setMessage(ResultEnum.SUCCESS.getMessage());
+    private String timestamp = DateUtil.now();
+
+
+    public static <T> Result<T> success(T data, String msg) {
+        Result<T> result = new Result<>();
+        result.setStatus(Result.SUCCESS_STATUS);
+        result.setMsg(msg);
         result.setData(data);
         return result;
     }
 
-    public static Result error() {
-        Result result = new Result();
-        result.setCode(ResultEnum.ERROR.getCode());
-        result.setSuccess(ResultEnum.ERROR.getFlag());
-        result.setMessage(ResultEnum.ERROR.getMessage());
+    public static <T> Result<T> success(T data) {
+        return success(data, "操作成功");
+    }
+
+    public static <T> Result<T> success() {
+        return success(null, "操作成功");
+    }
+
+    public static <T> Result<T> error(T data, String msg) {
+        Result<T> result = new Result<>();
+        result.setStatus(Result.ERROR_STATUS);
+        result.setMsg(msg);
+        result.setData(data);
         return result;
+    }
+
+    public static <T> Result<T> error(T data) {
+        return error(data, "操作失败");
+    }
+
+    public static <T> Result<T> error() {
+        return error(null, "操作失败");
     }
 
 }
