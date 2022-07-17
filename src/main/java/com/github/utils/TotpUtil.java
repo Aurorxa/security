@@ -28,12 +28,10 @@ public class TotpUtil {
      * 多少秒之内保持不变
      */
     public static final long TIME_STEP = 60 * 5L;
-
     /**
      * 密码的长度
      */
     public static final int PASSWORD_LENGTH = 6;
-
 
     private TimeBasedOneTimePasswordGenerator totp;
 
@@ -72,7 +70,6 @@ public class TotpUtil {
      * @throws InvalidKeyException
      */
     public boolean verifyTotp(Key key, String code) throws InvalidKeyException {
-
         return code.equals(createTotp(key, Instant.now()));
     }
 
