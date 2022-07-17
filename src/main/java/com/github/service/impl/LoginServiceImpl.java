@@ -5,6 +5,7 @@ import com.github.common.Result;
 import com.github.config.AppProperties;
 import com.github.dto.LoginDto;
 import com.github.dto.LoginReturnDto;
+import com.github.entity.User;
 import com.github.service.LoginService;
 import com.github.utils.JwtUtil;
 import lombok.NonNull;
@@ -13,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -48,13 +48,19 @@ public class LoginServiceImpl implements LoginService {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
         // 进行认证
         UsernamePasswordAuthenticationToken authenticate = (UsernamePasswordAuthenticationToken) this.authenticationManager.authenticate(token);
-        // 生成访问令牌和刷新令牌，返回给前端
-        String username = ((UserDetails) authenticate.getPrincipal()).getUsername();
-        Collection<GrantedAuthority> authorities = authenticate.getAuthorities();
-        User userDetails = new User(username, loginDto.getPassword(), authorities);
-        String accessToken = jwtUtil.createAccessToken(userDetails);
-        String refreshToken = jwtUtil.createRefreshToken(userDetails);
-        return Result.success(new LoginReturnDto().setAccessToken(accessToken).setRefreshToken(refreshToken));
+        User principal = (User) authenticate.getPrincipal();
+        // 判断是否开启的 totp
+        if (principal.getUsingMfa()) {
+            return Result.success();
+        } else { // 如果没有开启 totp，直接返回访问令牌和刷新令牌
+            String username = principal.getUsername();
+            Collection<GrantedAuthority> authorities = authenticate.getAuthorities();
+            UserDetails userDetails = new org.springframework.security.core.userdetails.User(username, loginDto.getPassword(), authorities);
+            String accessToken = jwtUtil.createAccessToken(userDetails);
+            String refreshToken = jwtUtil.createRefreshToken(userDetails);
+            return Result.success(new LoginReturnDto().setAccessToken(accessToken).setRefreshToken(refreshToken));
+        }
+
     }
 
     @Override
