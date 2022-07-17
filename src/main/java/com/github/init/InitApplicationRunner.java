@@ -20,7 +20,7 @@ import java.util.Optional;
  */
 @Component
 @RequiredArgsConstructor
-public class DefaultApplicationRunner implements ApplicationRunner {
+public class InitApplicationRunner implements ApplicationRunner {
 
     @NonNull
     private UserRepository userRepository;
