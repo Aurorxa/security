@@ -3,6 +3,7 @@ package com.github;
 import com.github.entity.Role;
 import com.github.entity.User;
 import com.github.utils.JwtUtil;
+import com.github.utils.TotpUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.time.Duration;
+import java.time.Instant;
 
 /**
  * @author 许大仙
@@ -24,6 +30,9 @@ public class ApplicationTest {
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private TotpUtil totpUtil;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -54,5 +63,32 @@ public class ApplicationTest {
         log.info("subject == {}", claims.getSubject());
 
     }
+
+
+    @Test
+    public void testTotp() throws InvalidKeyException {
+        Key key = totpUtil.generateKey();
+        Instant now = Instant.now();
+        String first = totpUtil.createTotp(key, now);
+        System.out.println("first = " + first);
+        System.out.println("first boolean = " + totpUtil.verifyTotp(key, first));
+
+        Instant later = now.plus(Duration.ofSeconds(TotpUtil.TIME_STEP));
+        String second = totpUtil.createTotp(key, later);
+        System.out.println("second = " + second);
+        System.out.println("second boolean = " + totpUtil.verifyTotp(key, second));
+    }
+
+    @Test
+    public void test3() {
+        Key key = totpUtil.generateKey();
+        String str = totpUtil.encodeKeyToString(key);
+        Key key1 = totpUtil.decodeKeyFromString(str);
+        System.out.println("key = " + key);
+        System.out.println("key1 = " + key1);
+        System.out.println("str = " + str);
+        System.out.println("boolean = " + (key == key1));
+    }
+
 
 }
