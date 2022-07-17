@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
     @NonNull
     private UserRepository userRepository;
+
+    @NonNull
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public User findByPhone(String phone) {
@@ -52,20 +56,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result<?> register(UserDto user) {
+    public Result<?> register(UserDto userDto) {
         // 1：确保 username、email、mobile 唯一，需要去数据库中校验
-        if (this.checkUsernameExisted(user.getUsername())) {
+        if (this.checkUsernameExisted(userDto.getUsername())) {
             throw new BizException("用户名已经存在");
         }
-        if (this.checkMobileExisted(user.getMobile())) {
+        if (this.checkMobileExisted(userDto.getMobile())) {
             throw new BizException("手机号码已经存在");
         }
-        if (this.checkEmailExisted(user.getEmail())) {
+        if (this.checkEmailExisted(userDto.getEmail())) {
             throw new BizException("邮箱已经存在");
         }
 
         // 2. 我们需要将 userDto 转换为 user ，并分配一个默认的角色（ROLE_USER）
-        return null;
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setRealName(userDto.getRealName());
+        user.setEmail(userDto.getEmail());
+        user.setNickName(userDto.getNickName());
+        user.setPhone(userDto.getMobile());
+
+        userRepository.save(user);
+
+
+        return Result.success();
     }
 
 
