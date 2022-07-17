@@ -47,23 +47,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @NonNull
     private ObjectMapper objectMapper;
+    @NonNull
+    private UserDetailsService userDetailsService;
+    @NonNull
+    private UserService userService;
+    @NonNull
+    private UserDetailsPasswordService userDetailsPasswordService;
+    @NonNull
+    private JwtFilter jwtFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    @NonNull
-    private UserDetailsService userDetailsService;
-
-    @NonNull
-    private UserService userService;
-
-    @NonNull
-    private UserDetailsPasswordService userDetailsPasswordService;
-
-    @NonNull
-    private JwtFilter jwtFilter;
 
     @Bean
     public RestAuthenticationFilter requestAuthenticationFilter() throws Exception {
@@ -181,4 +177,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout(AbstractHttpConfigurer::disable);
 
     }
+
 }

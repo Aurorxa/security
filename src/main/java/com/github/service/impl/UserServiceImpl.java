@@ -1,8 +1,10 @@
 package com.github.service.impl;
 
 import com.github.common.Result;
+import com.github.dao.RoleRepository;
 import com.github.dao.UserRepository;
 import com.github.dto.UserDto;
+import com.github.entity.Role;
 import com.github.entity.User;
 import com.github.ex.BizException;
 import com.github.service.UserService;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 /**
  * @author 许大仙
  * @version 1.0
@@ -27,10 +31,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @NonNull
     private UserRepository userRepository;
-
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @NonNull
+    private RoleRepository roleRepository;
 
     @Override
     public User findByPhone(String phone) {
@@ -76,6 +81,11 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         user.setNickName(userDto.getNickName());
         user.setPhone(userDto.getMobile());
+
+
+        Optional<Role> optional = roleRepository.findOne((Specification<Role>) (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("authority"), "ROLE_USER"));
+
+        user.getRoles().add(optional.orElse(new Role()));
 
         userRepository.save(user);
 
