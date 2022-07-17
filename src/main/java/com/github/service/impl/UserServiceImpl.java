@@ -1,5 +1,6 @@
 package com.github.service.impl;
 
+import com.github.common.Constant;
 import com.github.common.Result;
 import com.github.dao.RoleRepository;
 import com.github.dao.UserRepository;
@@ -83,7 +84,7 @@ public class UserServiceImpl implements UserService {
         user.setPhone(userDto.getMobile());
 
 
-        Optional<Role> optional = roleRepository.findOne((Specification<Role>) (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("authority"), "ROLE_USER"));
+        Optional<Role> optional = roleRepository.findOne((Specification<Role>) (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("authority"), Constant.defaultRoleName));
 
         user.getRoles().add(optional.orElse(new Role()));
 
