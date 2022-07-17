@@ -52,8 +52,8 @@ public class Result<T> implements Serializable {
         return result;
     }
 
-    public static <T> Result<T> error(T data) {
-        return error(data, "操作失败");
+    public static <T> Result<T> error(String msg) {
+        return error(null, msg);
     }
 
     public static <T> Result<T> error() {

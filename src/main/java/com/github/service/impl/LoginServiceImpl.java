@@ -1,6 +1,6 @@
 package com.github.service.impl;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.github.common.Result;
 import com.github.config.AppProperties;
 import com.github.dto.LoginDto;
@@ -58,8 +58,8 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public Result<LoginReturnDto> tokenRefresh(String authorization, String refreshToken) throws AccessDeniedException {
-        String accessToken = StrUtil.removePrefix(authorization, appProperties.getJwt().getPrefix());
+    public Result<LoginReturnDto> refresh(String authorization, String refreshToken) throws AccessDeniedException {
+        String accessToken = CharSequenceUtil.removePrefix(authorization, appProperties.getJwt().getPrefix());
         if (jwtUtil.validateRefreshToken(refreshToken) && jwtUtil.validateAccessTokenWithoutExpiration(accessToken)) {
             return Result.success(new LoginReturnDto().setAccessToken(jwtUtil.createAccessTokenWithRefreshToken(refreshToken)).setRefreshToken(refreshToken));
         }

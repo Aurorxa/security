@@ -128,7 +128,7 @@ public class JwtUtil {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parse(jwtToken);
             return true;
-        } catch (MalformedJwtException | SignatureException | IllegalArgumentException e) {
+        } catch (MalformedJwtException | SignatureException | IllegalArgumentException | ExpiredJwtException e) {
             e.printStackTrace();
             if (e instanceof ExpiredJwtException) {
                 return !isExpiredInvalid;

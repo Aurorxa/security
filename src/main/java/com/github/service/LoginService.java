@@ -26,6 +26,7 @@ public interface LoginService {
      * @param authorization
      * @param refreshToken
      * @return
+     * @throws AccessDeniedException;
      */
-    Result<LoginReturnDto> tokenRefresh(String authorization, String refreshToken) throws AccessDeniedException;
+    Result<LoginReturnDto> refresh(String authorization, String refreshToken) throws AccessDeniedException;
 }

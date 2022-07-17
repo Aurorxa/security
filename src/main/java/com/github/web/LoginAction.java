@@ -32,7 +32,7 @@ public class LoginAction {
      * @param loginDto
      * @return
      */
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public Result<LoginReturnDto> login(@RequestBody @Validated LoginDto loginDto) {
         return loginService.login(loginDto);
     }
@@ -45,9 +45,9 @@ public class LoginAction {
      * @return
      * @throws AccessDeniedException
      */
-    @PostMapping("/token/refresh")
-    public Result<LoginReturnDto> tokenRefresh(@RequestHeader(name = "Authorization") String authorization, @RequestParam String refreshToken) throws AccessDeniedException {
-        return loginService.tokenRefresh(authorization, refreshToken);
+    @PostMapping("/auth/refresh")
+    public Result<LoginReturnDto> refresh(@RequestHeader(name = "Authorization") String authorization, @RequestParam String refreshToken) throws AccessDeniedException {
+        return loginService.refresh(authorization, refreshToken);
     }
 
 
