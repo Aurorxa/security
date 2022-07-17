@@ -40,11 +40,13 @@ public class DefaultApplicationRunner implements ApplicationRunner {
             user.setRealName("系统管理员");
             user.setEmail("admin@qq.com");
 
-            Role role = new Role();
-            role.setAuthority("ROLE_ADMIN");
-            role.setAuthority("ROLE_USER");
+            Role adminRole = new Role();
+            adminRole.setAuthority("ROLE_ADMIN");
+            Role userRole = new Role();
+            userRole.setAuthority("ROLE_USER");
 
-            user.getRoles().add(role);
+            user.getRoles().add(adminRole);
+            user.getRoles().add(userRole);
 
             userRepository.save(user);
         }
