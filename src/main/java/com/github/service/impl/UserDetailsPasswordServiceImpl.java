@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -16,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 2022-07-14 15:03:48
  */
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 @RequiredArgsConstructor
 public class UserDetailsPasswordServiceImpl implements UserDetailsPasswordService {
 

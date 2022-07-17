@@ -1,5 +1,7 @@
 package com.github.service;
 
+import com.github.common.Result;
+import com.github.dto.UserDto;
 import com.github.entity.User;
 
 /**
@@ -17,4 +19,35 @@ public interface UserService {
      */
     User findByPhone(String phone);
 
+    /**
+     * 校验用户名是否存在
+     *
+     * @param username
+     * @return
+     */
+    boolean checkUsernameExisted(String username);
+
+    /**
+     * 校验邮件是否存在
+     *
+     * @param email
+     * @return
+     */
+    boolean checkEmailExisted(String email);
+
+    /**
+     * 校验手机号码是否存在
+     *
+     * @param mobile
+     * @return
+     */
+    boolean checkMobileExisted(String mobile);
+
+    /**
+     * 注册
+     *
+     * @param user
+     * @return
+     */
+    Result<?> register(UserDto user);
 }

@@ -2,6 +2,7 @@ package com.github.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
@@ -25,5 +26,9 @@ public class UserDto implements Serializable {
 
     private String nickName;
 
+    @NotBlank(message = "邮箱不能为空")
+    @Email
+    private String email;
 
+    private String mobile;
 }

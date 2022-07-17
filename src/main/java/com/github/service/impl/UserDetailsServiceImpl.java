@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -20,7 +21,7 @@ import java.util.Optional;
  * @since 2022-07-14 14:37:01
  */
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
     @NonNull
