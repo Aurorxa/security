@@ -1,17 +1,15 @@
 package com.github.init;
 
+import com.github.dao.PermissionRepository;
+import com.github.dao.RoleRepository;
 import com.github.dao.UserRepository;
-import com.github.entity.Role;
-import com.github.entity.User;
+import com.github.entity.Permission;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 /**
  * @author 许大仙
@@ -26,31 +24,34 @@ public class InitApplicationRunner implements ApplicationRunner {
     private UserRepository userRepository;
     @NonNull
     private PasswordEncoder passwordEncoder;
+    @NonNull
+    private RoleRepository roleRepository;
+    @NonNull
+    private PermissionRepository permissionRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        Optional<User> optional = userRepository.findOne((Specification<User>) (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("username"), "admin"));
-        // 如果数据库没有该账户
-        if (!optional.isPresent()) {
-            User user = new User();
-            user.setUsername("admin");
-            user.setPhone("17722291552");
-            user.setPassword(passwordEncoder.encode("123456"));
-            user.setRealName("系统管理员");
-            user.setEmail("admin@qq.com");
+        Permission permission1 = new Permission();
+        permission1.setDisplayName("查询用户信息");
+        permission1.setAuthority("USER_READ");
 
-            Role adminRole = new Role();
-            adminRole.setRoleName("ROLE_ADMIN");
-            adminRole.setDisplayName("管理员角色");
-            Role userRole = new Role();
-            userRole.setRoleName("ROLE_USER");
-            userRole.setDisplayName("普通用户角色");
 
-            user.getRoles().add(adminRole);
-            user.getRoles().add(userRole);
+        Permission permission2 = new Permission();
+        permission2.setDisplayName("新建用户信息");
+        permission2.setAuthority("USER_CREATE");
 
-            userRepository.save(user);
-        }
+
+        Permission permission3 = new Permission();
+        permission3.setDisplayName("编辑用户信息");
+        permission3.setAuthority("USER_UPDATE");
+
+        Permission permission4 = new Permission();
+        permission4.setDisplayName("USER_ADMIN");
+        permission4.setAuthority("用户管理");
+
+
+
+
     }
 }

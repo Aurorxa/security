@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'idea'
     // Lombok
     id "io.freefair.lombok" version "6.5.0.3"
     // 维护 springboot 版本号,不单独使用,和下面两个插件一起用
