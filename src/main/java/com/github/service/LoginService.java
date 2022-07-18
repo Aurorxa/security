@@ -44,6 +44,6 @@ public interface LoginService {
      */
     Result<String> sendTotp(SendTotpDto sendTotpDto) throws InvalidKeyException;
 
-    Result<LoginReturnDto> verifyTotp(VerifyTotpDto verifyTotpDto);
+    Result<LoginReturnDto> verifyTotp(VerifyTotpDto verifyTotpDto) throws InvalidKeyException;
 
 }

@@ -116,13 +116,11 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public Result<LoginReturnDto> verifyTotp(VerifyTotpDto verifyTotpDto) {
+    public Result<LoginReturnDto> verifyTotp(VerifyTotpDto verifyTotpDto) throws InvalidKeyException {
 
-        String mfaId = verifyTotpDto.getMfaId();
+        Optional<LoginReturnDto> optional = userCacheService.verifyTotp(verifyTotpDto.getMfaId(), verifyTotpDto.getCode());
 
-        userCacheService.verifyTotp(verifyTotpDto.getMfaId(), verifyTotpDto.getCode());
-
-        return null;
+        return optional.map(Result::success).orElseGet(Result::error);
     }
 
 }

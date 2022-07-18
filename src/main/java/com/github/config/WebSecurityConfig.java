@@ -31,6 +31,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.HashMap;
 
@@ -173,9 +176,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 // 禁止 csrf
                 .csrf(AbstractHttpConfigurer::disable)
+                // 配置跨域
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 // 禁止默认退出
                 .logout(AbstractHttpConfigurer::disable);
 
+    }
+
+    /**
+     * 配置跨域
+     *
+     * @return
+     */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedOriginPattern("*");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.setAllowCredentials(Boolean.TRUE);
+
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
     }
 
 }
