@@ -29,7 +29,6 @@ public class Permission implements GrantedAuthority, Serializable {
     @Column(name = "`permission_name`")
     private String authority;
 
-
     /**
      * 权限名称，显示名称
      */
