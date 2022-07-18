@@ -1,7 +1,9 @@
 package com.github.service;
 
+import com.github.dto.LoginReturnDto;
 import com.github.entity.User;
 
+import java.security.InvalidKeyException;
 import java.util.Optional;
 
 /**
@@ -27,5 +29,15 @@ public interface UserCacheService {
      * @return
      */
     Optional<User> extractUser(String mfaId);
+
+
+    /**
+     * 验证 totp
+     *
+     * @param mfaId
+     * @param code
+     * @return
+     */
+    Optional<LoginReturnDto> verifyTotp(String mfaId, String code) throws InvalidKeyException;
 
 }

@@ -3,9 +3,12 @@ package com.github.service;
 import com.github.common.Result;
 import com.github.dto.LoginDto;
 import com.github.dto.LoginReturnDto;
+import com.github.dto.SendTotpDto;
+import com.github.dto.VerifyTotpDto;
 
 import javax.servlet.http.HttpServletResponse;
 import java.nio.file.AccessDeniedException;
+import java.security.InvalidKeyException;
 
 /**
  * @author 许大仙
@@ -31,4 +34,16 @@ public interface LoginService {
      * @throws AccessDeniedException;
      */
     Result<LoginReturnDto> refresh(String authorization, String refreshToken) throws AccessDeniedException;
+
+    /**
+     * 发送 Totp
+     *
+     * @param sendTotpDto
+     * @return
+     * @throws InvalidKeyException;
+     */
+    Result<String> sendTotp(SendTotpDto sendTotpDto) throws InvalidKeyException;
+
+    Result<LoginReturnDto> verifyTotp(VerifyTotpDto verifyTotpDto);
+
 }

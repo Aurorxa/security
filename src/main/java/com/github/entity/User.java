@@ -2,8 +2,6 @@ package com.github.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -37,7 +35,7 @@ public class User implements UserDetails, Serializable {
     private String phone;
 
     private String email;
-    
+
     private String nickName;
 
     private Boolean enabled = true;
@@ -56,8 +54,8 @@ public class User implements UserDetails, Serializable {
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
-    })
-    @Fetch(FetchMode.JOIN)
+    }, fetch = FetchType.EAGER)
+    // @Fetch(FetchMode.JOIN)
     @JoinTable(
             name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},

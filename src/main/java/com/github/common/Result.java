@@ -44,6 +44,10 @@ public class Result<T> implements Serializable {
         return success(null, "操作成功");
     }
 
+    public static <T> Result<T> success(String msg) {
+        return success(null, msg);
+    }
+
     public static <T> Result<T> error(T data, String msg) {
         Result<T> result = new Result<>();
         result.setStatus(Result.ERROR_STATUS);

@@ -5,10 +5,15 @@ import com.github.common.Result;
 import com.github.config.AppProperties;
 import com.github.dto.LoginDto;
 import com.github.dto.LoginReturnDto;
+import com.github.dto.SendTotpDto;
+import com.github.dto.VerifyTotpDto;
 import com.github.entity.User;
+import com.github.enums.MfaType;
+import com.github.service.EmailService;
 import com.github.service.LoginService;
 import com.github.service.UserCacheService;
 import com.github.utils.JwtUtil;
+import com.github.utils.TotpUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +27,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import java.nio.file.AccessDeniedException;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.time.Instant;
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * @author 许大仙
@@ -39,10 +48,16 @@ public class LoginServiceImpl implements LoginService {
     private UserCacheService userCacheService;
 
     @NonNull
+    private EmailService emailService;
+
+    @NonNull
     private AuthenticationManager authenticationManager;
 
     @NonNull
     private JwtUtil jwtUtil;
+
+    @NonNull
+    private TotpUtil totpUtil;
 
     @NonNull
     private AppProperties appProperties;
@@ -57,7 +72,7 @@ public class LoginServiceImpl implements LoginService {
         // 判断是否开启的 totp
         if (principal.getUsingMfa()) {
             String mfaId = userCacheService.cacheUser(principal);
-            response.addHeader("x-Authenticate","mfa");
+            response.addHeader("x-Authenticate", "mfa");
             response.addHeader("x-Authenticate", "realm=" + mfaId);
             return Result.error("登录失败");
         } else { // 如果没有开启 totp，直接返回访问令牌和刷新令牌
@@ -78,6 +93,36 @@ public class LoginServiceImpl implements LoginService {
             return Result.success(new LoginReturnDto().setAccessToken(jwtUtil.createAccessTokenWithRefreshToken(refreshToken)).setRefreshToken(refreshToken));
         }
         return Result.error();
+    }
+
+    @Override
+    public Result<String> sendTotp(SendTotpDto sendTotpDto) throws InvalidKeyException {
+
+        Optional<User> optional = userCacheService.extractUser(sendTotpDto.getMfaId());
+        if (optional.isPresent()) {
+            User user = optional.get();
+            String mfaKey = user.getMfaKey();
+            Key key = totpUtil.decodeKeyFromString(mfaKey);
+            String totp = totpUtil.createTotp(key, Instant.now());
+
+            if (sendTotpDto.getMfaType().equals(MfaType.EMAIL)) {
+                emailService.sendEmail(user.getEmail(), totp);
+            }
+
+            return Result.success("发送成功");
+        }
+
+        return Result.error("发送失败");
+    }
+
+    @Override
+    public Result<LoginReturnDto> verifyTotp(VerifyTotpDto verifyTotpDto) {
+
+        String mfaId = verifyTotpDto.getMfaId();
+
+        userCacheService.verifyTotp(verifyTotpDto.getMfaId(), verifyTotpDto.getCode());
+
+        return null;
     }
 
 }

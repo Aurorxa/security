@@ -3,6 +3,8 @@ package com.github.web;
 import com.github.common.Result;
 import com.github.dto.LoginDto;
 import com.github.dto.LoginReturnDto;
+import com.github.dto.SendTotpDto;
+import com.github.dto.VerifyTotpDto;
 import com.github.service.LoginService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.nio.file.AccessDeniedException;
+import java.security.InvalidKeyException;
 
 /**
  * @author 许大仙
@@ -36,6 +39,29 @@ public class LoginAction {
     @PostMapping("/auth/login")
     public Result<LoginReturnDto> login(@RequestBody @Validated LoginDto loginDto, HttpServletResponse response) {
         return loginService.login(loginDto, response);
+    }
+
+    /**
+     * 发送 Totp
+     *
+     * @param sendTotpDto
+     * @return
+     */
+    @PostMapping("/auth/sendTotp")
+    public Result<String> sendTotp(@RequestBody @Validated SendTotpDto sendTotpDto) throws InvalidKeyException {
+        return loginService.sendTotp(sendTotpDto);
+    }
+
+    /**
+     * 验证 totp
+     *
+     * @param verifyTotpDto
+     * @return
+     * @throws InvalidKeyException
+     */
+    @PostMapping("/auth/verifyTotp")
+    public Result<LoginReturnDto> verifyTotp(@RequestBody @Validated VerifyTotpDto verifyTotpDto) throws InvalidKeyException {
+        return loginService.verifyTotp(verifyTotpDto);
     }
 
     /**
