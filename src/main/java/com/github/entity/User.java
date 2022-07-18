@@ -2,7 +2,10 @@ package com.github.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -10,6 +13,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author 许大仙
@@ -51,11 +56,9 @@ public class User implements UserDetails, Serializable {
     @JsonIgnore
     private String mfaKey;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    }, fetch = FetchType.EAGER)
-    // @Fetch(FetchMode.JOIN)
+    @JsonIgnore
+    @ManyToMany()
+    @Fetch(FetchMode.JOIN)
     @JoinTable(
             name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
@@ -72,9 +75,15 @@ public class User implements UserDetails, Serializable {
     @Column(columnDefinition = "boolean default true")
     private Boolean credentialsNonExpired = true;
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
+        return roles.stream()
+                .flatMap(role -> Stream.concat(
+                        Stream.of(new SimpleGrantedAuthority(role.getRoleName())),
+                        role.getPermissions().stream())
+                )
+                .collect(Collectors.toSet());
     }
 
     @Override

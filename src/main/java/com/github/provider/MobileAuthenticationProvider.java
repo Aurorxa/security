@@ -30,11 +30,11 @@ public class MobileAuthenticationProvider implements AuthenticationProvider {
         // 获取密码
         String code = (String) authentication.getCredentials();
 
-        if (StringUtils.isEmpty(phone)) {
+        if (StringUtils.hasText(phone)) {
             throw new UsernameNotFoundException("手机号不可以为空");
         }
 
-        if (StringUtils.isEmpty(code)) {
+        if (StringUtils.hasText(code)) {
             throw new BadCredentialsException("验证码不能为空");
         }
 

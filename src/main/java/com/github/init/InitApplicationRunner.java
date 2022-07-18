@@ -41,9 +41,11 @@ public class InitApplicationRunner implements ApplicationRunner {
             user.setEmail("admin@qq.com");
 
             Role adminRole = new Role();
-            adminRole.setAuthority("ROLE_ADMIN");
+            adminRole.setRoleName("ROLE_ADMIN");
+            adminRole.setDisplayName("管理员角色");
             Role userRole = new Role();
-            userRole.setAuthority("ROLE_USER");
+            userRole.setRoleName("ROLE_USER");
+            userRole.setDisplayName("普通用户角色");
 
             user.getRoles().add(adminRole);
             user.getRoles().add(userRole);
