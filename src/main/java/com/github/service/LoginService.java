@@ -4,6 +4,7 @@ import com.github.common.Result;
 import com.github.dto.LoginDto;
 import com.github.dto.LoginReturnDto;
 
+import javax.servlet.http.HttpServletResponse;
 import java.nio.file.AccessDeniedException;
 
 /**
@@ -16,9 +17,10 @@ public interface LoginService {
      * 登录
      *
      * @param loginDto
+     * @param response
      * @return
      */
-    Result<LoginReturnDto> login(LoginDto loginDto);
+    Result<LoginReturnDto> login(LoginDto loginDto, HttpServletResponse response);
 
     /**
      * 刷新令牌

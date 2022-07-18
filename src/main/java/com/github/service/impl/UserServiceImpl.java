@@ -9,6 +9,7 @@ import com.github.entity.Role;
 import com.github.entity.User;
 import com.github.ex.BizException;
 import com.github.service.UserService;
+import com.github.utils.TotpUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
@@ -37,6 +38,9 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @NonNull
     private RoleRepository roleRepository;
+
+    @NonNull
+    private TotpUtil totpUtil;
 
     @Override
     public User findByPhone(String phone) {
@@ -82,14 +86,15 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         user.setNickName(userDto.getNickName());
         user.setPhone(userDto.getMobile());
+        // 生成 totp 的 key
+        String mfaKey = totpUtil.encodeKeyToString();
+        user.setMfaKey(mfaKey);
 
-
-        Optional<Role> optional = roleRepository.findOne((Specification<Role>) (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("authority"), Constant.defaultRoleName));
+        Optional<Role> optional = roleRepository.findOne((Specification<Role>) (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("authority"), Constant.DEFAULT_ROLE_NAME));
 
         user.getRoles().add(optional.orElse(new Role()));
 
         userRepository.save(user);
-
 
         return Result.success();
     }

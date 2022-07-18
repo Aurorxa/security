@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.nio.file.AccessDeniedException;
 
 /**
@@ -33,8 +34,8 @@ public class LoginAction {
      * @return
      */
     @PostMapping("/auth/login")
-    public Result<LoginReturnDto> login(@RequestBody @Validated LoginDto loginDto) {
-        return loginService.login(loginDto);
+    public Result<LoginReturnDto> login(@RequestBody @Validated LoginDto loginDto, HttpServletResponse response) {
+        return loginService.login(loginDto, response);
     }
 
     /**

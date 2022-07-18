@@ -7,6 +7,7 @@ import com.github.dto.LoginDto;
 import com.github.dto.LoginReturnDto;
 import com.github.entity.User;
 import com.github.service.LoginService;
+import com.github.service.UserCacheService;
 import com.github.utils.JwtUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.nio.file.AccessDeniedException;
 import java.util.Collection;
 
@@ -34,6 +36,9 @@ import java.util.Collection;
 public class LoginServiceImpl implements LoginService {
 
     @NonNull
+    private UserCacheService userCacheService;
+
+    @NonNull
     private AuthenticationManager authenticationManager;
 
     @NonNull
@@ -43,7 +48,7 @@ public class LoginServiceImpl implements LoginService {
     private AppProperties appProperties;
 
     @Override
-    public Result<LoginReturnDto> login(LoginDto loginDto) {
+    public Result<LoginReturnDto> login(LoginDto loginDto, HttpServletResponse response) {
         // 封装 token
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
         // 进行认证
@@ -51,14 +56,17 @@ public class LoginServiceImpl implements LoginService {
         User principal = (User) authenticate.getPrincipal();
         // 判断是否开启的 totp
         if (principal.getUsingMfa()) {
-            return Result.success();
+            String mfaId = userCacheService.cacheUser(principal);
+            response.addHeader("x-Authenticate","mfa");
+            response.addHeader("x-Authenticate", "realm=" + mfaId);
+            return Result.error("登录失败");
         } else { // 如果没有开启 totp，直接返回访问令牌和刷新令牌
             String username = principal.getUsername();
             Collection<GrantedAuthority> authorities = authenticate.getAuthorities();
             UserDetails userDetails = new org.springframework.security.core.userdetails.User(username, loginDto.getPassword(), authorities);
             String accessToken = jwtUtil.createAccessToken(userDetails);
             String refreshToken = jwtUtil.createRefreshToken(userDetails);
-            return Result.success(new LoginReturnDto().setAccessToken(accessToken).setRefreshToken(refreshToken));
+            return Result.success(new LoginReturnDto().setAccessToken(accessToken).setRefreshToken(refreshToken), "登录成功");
         }
 
     }
@@ -71,4 +79,5 @@ public class LoginServiceImpl implements LoginService {
         }
         return Result.error();
     }
+
 }

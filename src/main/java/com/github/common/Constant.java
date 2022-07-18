@@ -7,6 +7,8 @@ package com.github.common;
  */
 public interface Constant {
 
-    String defaultRoleName = "ROLE_USER";
+    String DEFAULT_ROLE_NAME = "ROLE_USER";
+
+    String CACHE_MFA = "cacheMfa";
 
 }

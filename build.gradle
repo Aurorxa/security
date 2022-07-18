@@ -35,7 +35,7 @@ dependencies {
     /* MySQL 驱动 */
     implementation 'mysql:mysql-connector-java'
     /* 验证码 */
-    implementation 'com.pig4cloud.plugin:captcha-spring-boot-starter:2.2.2'
+    implementation group: 'com.pig4cloud.plugin', name: 'captcha-spring-boot-starter', version: '2.2.2'
     /* jwt */
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
@@ -46,6 +46,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     /* Redis */
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.apache.commons:commons-pool2'
     /* 阿里云短信 */
     implementation 'com.aliyun:dysmsapi20170525:2.0.16'
     /* OTP */

@@ -4,8 +4,7 @@ import com.github.dao.UserRepository;
 import com.github.entity.User;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,11 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = new User();
-        user.setUsername(username);
-
-        Optional<User> optional = userRepository.findOne(Example.of(user, ExampleMatcher.matching()
-                .withMatcher("username", ExampleMatcher.GenericPropertyMatchers.exact())));
+        Optional<User> optional = userRepository.findOne((Specification<User>) (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("username"), username));
 
         return optional.orElseThrow(() -> new UsernameNotFoundException("没有" + username + "用户！！！"));
     }

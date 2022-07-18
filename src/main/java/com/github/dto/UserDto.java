@@ -20,8 +20,6 @@ public class UserDto implements Serializable {
     @NotBlank(message = "密码不能为空")
     private String password;
 
-    private String checkPassword;
-
     private String realName;
 
     private String nickName;
